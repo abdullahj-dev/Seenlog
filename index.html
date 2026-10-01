@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Seenlog</title>
+<meta id="md" name="description" content="">
+<meta name="robots" content="index,follow">
+<meta id="ogt" property="og:title" content="">
+<meta id="ogd" property="og:description" content="">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#1d0c11">
+<link rel="canonical" id="cn" href="">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎞️%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Limelight&family=Hanken+Grotesk:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--velvet:#1d0c11;--aisle:#2b141b;--seam:#4a2530;--cream:#f3e6cf;--dim:#b39a8e;--brass:#d4a95a;--ember:#e2513b}
+*{box-sizing:border-box;margin:0}
+body{background:radial-gradient(90% 50% at 50% 0,#3d1620 0,var(--velvet) 70%) fixed;color:var(--cream);font:400 16px/1.5 'Hanken Grotesk',system-ui,sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.08;z-index:60;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+.d{font-family:Limelight,'Times New Roman',serif;font-weight:400}
+header{padding:calc(36px + env(safe-area-inset-top)) 0 34px;position:relative;border-bottom:1px solid var(--seam)}
+header::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:11px;background:radial-gradient(circle,var(--brass) 3px,transparent 3.6px) 0 0/24px 11px repeat-x}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+h1{font-size:clamp(3.2rem,12vw,8rem);line-height:.9;color:var(--cream);text-shadow:0 0 34px #d4a95a55}
+.tag{color:var(--dim);max-width:44ch;margin-top:12px}
+.tally{display:flex;align-items:center;gap:16px}
+.ring{--p:0;width:84px;height:84px;border-radius:50%;background:conic-gradient(var(--brass) calc(var(--p)*1%),var(--seam) 0);display:grid;place-items:center;flex:none}
+.ring::before{content:attr(data-t);width:68px;height:68px;border-radius:50%;background:var(--velvet);display:grid;place-items:center;font:1.15rem Limelight,serif}
+.tally b{display:block;font:2.6rem/1 Limelight,serif;color:var(--brass)}
+.tally small{color:var(--dim)}
+.find{margin:46px 0 8px;position:relative}
+.find label{display:block;color:var(--dim);font-size:.85rem;margin-bottom:8px}
+#q{width:100%;background:var(--aisle);border:2px solid var(--seam);border-radius:2px;color:var(--cream);font:600 1.35rem 'Hanken Grotesk',sans-serif;padding:18px 20px;outline:0;transition:border-color .2s,box-shadow .2s}
+#q:focus{border-color:var(--brass);box-shadow:0 0 0 5px #d4a95a24}
+#res{position:absolute;left:0;right:0;top:100%;z-index:20;background:#240f15;border:2px solid var(--brass);border-top:0;max-height:62vh;overflow:auto}
+.r{display:flex;gap:14px;padding:10px 14px;width:100%;align-items:center;background:0;border:0;border-bottom:1px solid var(--seam);color:inherit;font:inherit;text-align:left;cursor:pointer}
+.r:hover,.r:focus-visible{background:#3a1a24;outline:0}
+.r img,.r i{width:40px;height:58px;object-fit:cover;background:var(--seam);flex:none}
+.r small{color:var(--dim);display:block}
+.kind{font-size:.72rem;font-weight:800;border:1px solid var(--brass);color:var(--brass);padding:0 7px;border-radius:99px;margin-left:8px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:28px 0 26px}
+.chip{background:0;border:1.5px solid var(--seam);color:var(--dim);padding:7px 15px;border-radius:99px;font:600 .85rem 'Hanken Grotesk',sans-serif;cursor:pointer}
+.chip:hover{color:var(--cream);border-color:var(--dim)}
+.chip[aria-pressed=true]{background:var(--brass);border-color:var(--brass);color:#2a1408}
+.bar input,.bar select{background:var(--aisle);border:1.5px solid var(--seam);color:var(--cream);padding:8px 12px;border-radius:4px;font:inherit;font-size:.85rem}
+.gap{flex:1;min-width:8px}
+.sep{width:1px;height:24px;background:var(--seam)}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:26px 18px;padding-bottom:80px}
+.card{display:flex;flex-direction:column;background:0;border:0;padding:0;color:inherit;font:inherit;text-align:left;cursor:pointer;position:relative}
+.poster{aspect-ratio:2/3;background:var(--aisle) center/cover;position:relative;box-shadow:0 10px 26px #0009;transition:transform .25s,box-shadow .25s}
+.card:hover .poster,.card:focus-visible .poster{transform:translateY(-7px) rotate(-.8deg);box-shadow:0 20px 40px #000b,0 0 0 2px var(--brass)}
+.card:focus-visible{outline:0}
+.blank{display:grid;place-items:center;padding:14px;text-align:center;font:1.2rem/1.1 Limelight,serif;color:var(--dim)}
+.stub{margin-top:10px;padding:9px 2px 0;border-top:2px dashed var(--seam)}
+.stub b{display:block;font-size:.92rem;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stub small{color:var(--dim);font-size:.78rem}
+.st{position:absolute;left:0;top:12px;padding:3px 12px 3px 9px;font-size:.75rem;font-weight:800;background:var(--velvet);color:var(--brass);clip-path:polygon(0 0,100% 0,88% 50%,100% 100%,0 100%)}
+.st.done{background:var(--brass);color:#2a1408}.st.now{background:var(--ember);color:#fff}
+.stamp{position:absolute;right:8px;bottom:8px;min-width:54px;height:54px;padding:0 6px;border-radius:50%;border:3px double var(--brass);color:var(--brass);background:#1d0c11e6;display:grid;place-items:center;font:1.2rem/1 Limelight,serif;transform:rotate(-14deg)}
+.ghost .poster{border:2px dashed var(--seam);background:0;box-shadow:none;display:grid;place-items:center;color:var(--seam);font:1.1rem Limelight,serif}
+.none{grid-column:1/-1;color:var(--dim);padding:40px 0}
+dialog{margin:auto;max-width:880px;width:calc(100% - 24px);max-height:92vh;background:var(--aisle);color:var(--cream);border:2px solid var(--brass);border-radius:2px;padding:0;overflow:auto}
+dialog::backdrop{background:#0009;backdrop-filter:blur(5px)}
+.dm{display:grid;grid-template-columns:240px 1fr;gap:26px;padding:26px}
+@media(max-width:640px){.dm{grid-template-columns:1fr}.dm .poster{max-width:200px}}
+.dm h2{font:2.3rem/1 Limelight,serif}
+.meta{color:var(--dim);font-size:.9rem;margin:8px 0}
+.dm p{font-size:.92rem;color:#dccdb8;margin:10px 0;max-width:62ch}
+.crew{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-size:.88rem;margin:12px 0}.crew dt{color:var(--dim)}.crew dd{margin:0}
+.dm h3{font-size:.9rem;font-weight:800;color:var(--brass);margin:18px 0 8px}
+.dm textarea{width:100%;min-height:92px;background:var(--velvet);border:1.5px solid var(--seam);color:var(--cream);border-radius:4px;padding:10px;font:inherit;resize:vertical}
+.rate{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.rate button{background:0;border:0;font-size:2rem;cursor:pointer;color:var(--brass);opacity:.35;line-height:1;transition:transform .15s,opacity .15s}
+.rate button.on,.rate button:hover{opacity:1;transform:scale(1.15)}
+.rate input{width:120px;font:1.7rem Limelight,serif;background:var(--velvet);border:1.5px solid var(--seam);color:var(--brass);padding:4px 10px;border-radius:4px}
+#big{font:2.2rem Limelight,serif;color:var(--brass);animation:thud .32s cubic-bezier(.2,1.4,.4,1)}
+@keyframes thud{from{transform:scale(2.4) rotate(-25deg);opacity:0}}
+.act{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.btn{background:var(--brass);color:#2a1408;border:0;padding:10px 16px;border-radius:3px;font:800 .85rem 'Hanken Grotesk',sans-serif;cursor:pointer;text-decoration:none}
+.btn.g{background:0;color:var(--cream);border:1.5px solid var(--seam)}.btn.x{color:#ff8a76}
+#toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,130px);background:var(--brass);color:#2a1408;padding:11px 18px;border-radius:3px;font-weight:800;transition:transform .3s;z-index:99}#toast.on{transform:translate(-50%,0)}
+footer{border-top:1px solid var(--seam);padding:26px 0 44px;color:var(--dim);font-size:.85rem;display:flex;gap:14px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+footer a{color:var(--cream)}
+:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*,*::before{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="head">
+<div><h1 class="d" id="name"></h1><p class="tag" id="tag"></p></div>
+<div class="tally"><div class="ring" id="ring" data-t="0%"></div><div><b id="tot">0</b><small id="sub"></small></div></div>
+</div></header>
+<main>
+<div class="find"><label for="q">Find a movie, series or anime</label>
+<input id="q" type="search" autocomplete="off" placeholder="Start typing a title">
+<div id="res" hidden></div></div>
+<div class="bar" id="bar">
+<span id="fs"></span><span class="sep"></span><span id="fk"></span><span class="gap"></span>
+<input id="lq" type="search" placeholder="Search your list">
+<select id="sort" aria-label="Sort"><option value="recent">Recently added</option><option value="rating">Highest rated</option><option value="year">Newest release</option><option value="title">Title A to Z</option></select>
+</div>
+<section id="grid" aria-live="polite"></section>
+</main>
+<footer><span id="foot"></span><span><button class="chip" id="ex">Export list</button> <button class="chip" id="im">Import list</button><input type="file" id="fi" accept=".json" hidden></span></footer>
+</div>
+<dialog id="dlg"></dialog>
+<div id="toast" role="status"></div>
+<script>
+/* ONE PLACE TO EDIT. Change these and the whole site follows. */
+const CONFIG={
+  siteName:'Seenlog',
+  tagline:'Everything you have sat through, in one place.',
+  description:'A personal log of movies, series and anime: what I watched, what I rated, what is next.',
+  owner:'Abdullah',
+  email:'',
+  siteUrl:'',
+  ratingMode:'10',   /* '10' (7.5), '100' (75), '5' (stars), 'smiley' */
+  tmdbToken:'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1OGE2NTQxYWEzMmUzNjAwYWYzODdjNzYwMWRlZTQzYSIsIm5iZiI6MTc5MDY4MDQxNi41NTcsInN1YiI6IjZhYmI5ZDYwYzQ4MmU4MjEzZDlkZGQ4ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.CeP6lXDnc8lcGLEINPW4KAEfEZgaIq4NGWfC1wzqPu8',      /* TMDB "API Read Access Token" (long one). Needed for movies and series. */
+  brass:'#d4a95a'
+};
+
+const K='seenlog_v1',$=s=>document.querySelector(s),M=CONFIG.ratingMode;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let lib=[];try{lib=JSON.parse(localStorage.getItem(K))||[]}catch(e){}
+let hits=[],cur=null,fS='all',fK='all',tk=0;
+const ST={plan:'Plan to watch',now:'Watching',done:'Watched'},KD={movie:'Movie',series:'Series',anime:'Anime'},F=['😖','🙁','😐','🙂','🤩'];
+const face=v=>Math.max(0,Math.min(4,Math.floor((v-.1)/20)));
+const fmt=v=>v==null?'-':M==='100'?Math.round(v):M==='5'?'★'+(v/20).toFixed(1).replace('.0',''):M==='smiley'?F[face(v)]:(v/10).toFixed(1);
+
+/* head + config */
+document.documentElement.style.setProperty('--brass',CONFIG.brass);
+document.title=CONFIG.siteName+' | '+CONFIG.tagline;
+$('#md').content=$('#ogd').content=CONFIG.description;$('#ogt').content=document.title;
+$('#cn').href=CONFIG.siteUrl||location.href.split('#')[0];
+$('#name').textContent=CONFIG.siteName;$('#tag').textContent=CONFIG.tagline;
+$('#foot').innerHTML='© '+new Date().getFullYear()+' '+esc(CONFIG.siteName)+(CONFIG.email?' · <a href="mailto:'+esc(CONFIG.email)+'">'+esc(CONFIG.email)+'</a>':'');
+const ld=document.createElement('script');ld.type='application/ld+json';
+ld.textContent=JSON.stringify({'@context':'https://schema.org','@type':'WebSite',name:CONFIG.siteName,description:CONFIG.description,url:CONFIG.siteUrl||location.href,author:{'@type':'Person',name:CONFIG.owner}});
+document.head.appendChild(ld);
+
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(lib))}catch(e){}render()};
+let tt;const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2400)};
+
+/* filters */
+function chips(el,obj,get,set){$(el).innerHTML=Object.entries({all:'All',...obj}).map(([k,v])=>`<button class="chip" data-k="${k}" aria-pressed="${get()===k}">${v}</button>`).join(' ');}
+function drawChips(){chips('#fs',ST,()=>fS);chips('#fk',KD,()=>fK)}
+$('#fs').onclick=e=>{const k=e.target.dataset.k;if(k){fS=k;drawChips();render()}};
+$('#fk').onclick=e=>{const k=e.target.dataset.k;if(k){fK=k;drawChips();render()}};
+$('#lq').oninput=render;$('#sort').onchange=render;
+
+/* search */
+const H=()=>({Authorization:'Bearer '+CONFIG.tmdbToken});
+const AQ='query($q:String){Page(perPage:6){media(search:$q,type:ANIME,sort:SEARCH_MATCH){id title{romaji english}coverImage{large}startDate{year}genres description(asHtml:false)episodes studios(isMain:true){nodes{name}}staff(perPage:10){edges{role node{name{full}}}}}}}';
+async function findTmdb(q){if(!CONFIG.tmdbToken)return[];
+  try{const d=await(await fetch('https://api.themoviedb.org/3/search/multi?include_adult=false&query='+encodeURIComponent(q),{headers:H()})).json();
+  return(d.results||[]).filter(x=>x.media_type==='movie'||x.media_type==='tv').slice(0,7).map(x=>({src:'tmdb',tm:x.media_type,id:x.id,key:'tm'+x.media_type+x.id,kind:x.media_type==='tv'?'series':'movie',title:x.title||x.name,year:(x.release_date||x.first_air_date||'').slice(0,4),poster:x.poster_path?'https://image.tmdb.org/t/p/w342'+x.poster_path:''}))}catch(e){return[]}}
+async function findAni(q){try{const d=await(await fetch('https://graphql.anilist.co',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:AQ,variables:{q}})})).json();
+  return d.data.Page.media.map(m=>{const pick=re=>[...new Set(m.staff.edges.filter(e=>re.test(e.role)).map(e=>e.node.name.full))].slice(0,3).join(', ');
+  const t=m.title.english||m.title.romaji;
+  return{src:'al',key:'al'+m.id,kind:'anime',title:t,year:m.startDate.year||'',poster:m.coverImage.large,
+   item:{kind:'anime',title:t,year:m.startDate.year||'',poster:m.coverImage.large,overview:(m.description||'').replace(/<[^>]+>/g,''),genres:m.genres||[],director:pick(/Director/i),writer:pick(/Original|Script|Story|Composition/i),studio:m.studios.nodes[0]?.name||'',cast:'',runtime:m.episodes?m.episodes+' episodes':''}}})}catch(e){return[]}}
+$('#q').oninput=e=>{clearTimeout($('#q').t);const q=e.target.value.trim(),my=++tk;
+  if(q.length<2){$('#res').hidden=true;return}
+  $('#q').t=setTimeout(async()=>{const[a,b]=await Promise.all([findTmdb(q),findAni(q)]);if(my!==tk)return;hits=[...a,...b];
+   $('#res').hidden=false;$('#res').innerHTML=hits.length?hits.map((h,i)=>`<button class="r" data-i="${i}">${h.poster?`<img src="${esc(h.poster)}" alt="" loading="lazy">`:'<i></i>'}<span><b>${esc(h.title)}</b><span class="kind">${KD[h.kind]}</span><small>${esc(h.year)}</small></span></button>`).join(''):
+   `<div class="r"><span>No match.${CONFIG.tmdbToken?' Check the spelling.':' Movies and series need the TMDB token in CONFIG.'}</span></div>`},350)};
+$('#res').onclick=e=>{const b=e.target.closest('.r[data-i]');if(b)add(+b.dataset.i)};
+document.addEventListener('click',e=>{if(!e.target.closest('.find'))$('#res').hidden=true});
+
+async function full(h){const d=await(await fetch(`https://api.themoviedb.org/3/${h.tm}/${h.id}?append_to_response=credits`,{headers:H()})).json(),c=d.credits||{crew:[],cast:[]};
+  const nm=re=>[...new Set(c.crew.filter(p=>re.test(p.job)).map(p=>p.name))].slice(0,3).join(', ');
+  return{kind:h.kind,title:h.title,year:h.year,poster:h.poster,overview:d.overview||'',genres:(d.genres||[]).map(g=>g.name),
+   director:h.tm==='tv'?((d.created_by||[]).map(p=>p.name).join(', ')||nm(/^Director$/)):nm(/^Director$/),writer:nm(/Writer|Screenplay|Story/),studio:'',
+   cast:c.cast.slice(0,5).map(p=>p.name).join(', '),runtime:h.tm==='tv'?(d.number_of_seasons?d.number_of_seasons+' seasons':''):(d.runtime?d.runtime+' min':'')}}
+async function add(i){const h=hits[i];$('#res').hidden=true;$('#q').value='';
+  if(lib.some(x=>x.key===h.key)){toast('Already in your list');return openD(h.key)}
+  toast('Adding '+h.title+'...');
+  try{const f=h.src==='al'?h.item:await full(h);
+   lib.unshift({...f,key:h.key,no:Math.max(0,...lib.map(x=>x.no||0))+1,status:'plan',rating:null,notes:'',added:Date.now()});
+   save();toast('Logged: '+h.title);openD(h.key)}catch(e){toast('Could not load details. Try again.')}}
+
+/* list */
+const pad=n=>String(n||0).padStart(3,'0');
+function render(){const q=$('#lq').value.toLowerCase(),s=$('#sort').value;
+  let a=lib.filter(x=>(fS==='all'||x.status===fS)&&(fK==='all'||x.kind===fK)&&(!q||[x.title,x.genres.join(' '),x.director,x.writer,x.cast].join(' ').toLowerCase().includes(q)));
+  a.sort(s==='rating'?(x,y)=>(y.rating??-1)-(x.rating??-1):s==='year'?(x,y)=>(+y.year||0)-(+x.year||0):s==='title'?(x,y)=>x.title.localeCompare(y.title):(x,y)=>y.added-x.added);
+  $('#grid').innerHTML=a.map(x=>`<button class="card" data-key="${esc(x.key)}"><div class="poster ${x.poster?'':'blank'}" ${x.poster?`style="background-image:url('${esc(x.poster)}')"`:''}>${x.poster?'':esc(x.title)}<span class="st ${x.status}">${ST[x.status]}</span>${x.rating!=null?`<span class="stamp">${fmt(x.rating)}</span>`:''}</div><div class="stub"><b>${esc(x.title)}</b><small>No. ${pad(x.no)}, ${KD[x.kind]}${x.year?', '+esc(x.year):''}</small></div></button>`).join('')
+  ||(lib.length?'<p class="none">Nothing matches these filters.</p>':[1,2,3,4].map(n=>`<div class="card ghost"><div class="poster">${n===1?'Ticket 001':'Empty seat'}</div></div>`).join('')+'<p class="none">The house is empty. Search a title above and log your first ticket.</p>');
+  const d=lib.filter(x=>x.status==='done').length,r=lib.filter(x=>x.rating!=null);
+  $('#tot').textContent=lib.length;$('#ring').style.setProperty('--p',lib.length?d/lib.length*100:0);$('#ring').dataset.t=lib.length?Math.round(d/lib.length*100)+'%':'0%';
+  $('#sub').textContent=`${lib.length===1?'title':'titles'} logged, ${d} watched`+(r.length?', average '+fmt(r.reduce((t,x)=>t+x.rating,0)/r.length):'')}
+$('#grid').onclick=e=>{const c=e.target.closest('.card[data-key]');if(c)openD(c.dataset.key)};
+
+/* detail */
+const dlg=$('#dlg');
+function openD(key){cur=lib.find(x=>x.key===key);if(!cur)return;draw();if(!dlg.open)dlg.showModal()}
+function ctl(){const v=cur.rating;
+  if(M==='5')return[0,1,2,3,4].map(i=>`<button data-v="${i*20+20}" class="${v>=i*20+20?'on':''}" aria-label="${i+1} stars">★</button>`).join('');
+  if(M==='smiley')return F.map((f,i)=>`<button data-v="${i*20+20}" class="${v!=null&&face(v)===i?'on':''}">${f}</button>`).join('');
+  const h=M==='100';return`<input id="rv" type="number" min="0" max="${h?100:10}" step="${h?1:.1}" value="${v==null?'':h?v:v/10}" placeholder="${h?'0-100':'0-10'}" aria-label="Your rating">`}
+function draw(){const c=cur,g=(k,l)=>c[k]?`<dt>${l}</dt><dd>${esc(c[k])}</dd>`:'';
+  dlg.innerHTML=`<div class="dm"><div class="poster ${c.poster?'':'blank'}" ${c.poster?`style="background-image:url('${esc(c.poster)}')"`:''}>${c.poster?'':esc(c.title)}</div><div>
+  <h2>${esc(c.title)}</h2><div class="meta">${[KD[c.kind],c.year,c.runtime,(c.genres||[]).join(', ')].filter(Boolean).map(esc).join(', ')}</div>
+  <div class="rate"><span id="big">${c.rating!=null?fmt(c.rating):''}</span></div>
+  <dl class="crew">${g('director','Director or creator')}${g('writer','Writer')}${g('studio','Studio')}${g('cast','Cast')}</dl>
+  <p>${esc(c.overview)}</p>
+  <h3>Status</h3><div>${Object.entries(ST).map(([k,v])=>`<button class="chip" data-s="${k}" aria-pressed="${c.status===k}">${v}</button>`).join(' ')}</div>
+  <h3>Your rating</h3><div class="rate">${ctl()}</div>
+  <h3>Notes</h3><textarea id="nt" placeholder="What did you think?">${esc(c.notes)}</textarea>
+  <div class="act"><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/search?q=${encodeURIComponent(c.title+' '+c.year+' '+(c.kind==='movie'?'movie':c.kind))}">Search on Google</a><button class="btn g" data-x="close">Close</button><button class="btn g x" data-x="del">Remove</button></div></div></div>`}
+dlg.onclick=e=>{if(e.target===dlg)return dlg.close();const t=e.target.closest('button');if(!t||!cur)return;
+  if(t.dataset.s){cur.status=t.dataset.s;save();draw()}
+  else if(t.dataset.v){cur.rating=+t.dataset.v;save();draw()}
+  else if(t.dataset.x==='close')dlg.close();
+  else if(t.dataset.x==='del'&&confirm('Remove '+cur.title+' from your list?')){lib=lib.filter(x=>x!==cur);save();dlg.close();toast('Removed')}};
+dlg.onchange=e=>{if(!cur)return;
+  if(e.target.id==='rv'){const v=e.target.value;cur.rating=v===''?null:Math.min(100,Math.max(0,+v*(M==='100'?1:10)));save();draw()}
+  if(e.target.id==='nt'){cur.notes=e.target.value;save()}};
+
+/* export and import */
+$('#ex').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(lib,null,1)],{type:'application/json'}));a.download=CONFIG.siteName.toLowerCase()+'-backup.json';a.click()};
+$('#im').onclick=()=>$('#fi').click();
+$('#fi').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());if(!Array.isArray(d))throw 0;
+  d.forEach(x=>{if(x&&x.key&&x.title&&!lib.some(y=>y.key===x.key))lib.push({genres:[],notes:'',status:'plan',rating:null,added:Date.now(),...x})});save();toast('Import done')}catch(err){toast('That file is not a valid backup')}};
+
+drawChips();render();
+</script>
+</body>
+</html>
