@@ -97,3 +97,18 @@ Password rules: 8 or more characters when creating or changing a password (the c
 - Admin > Inbox: Email them opens your mail app with the person's address, a subject and their message quoted.
 - On the manual add form (signed in), "Suggest this title for everyone's search" sends the title, cast, genres, summary and poster to the inbox. Add to catalog opens the Catalog form with everything filled in. A poster someone else uploaded is copied into the admin's own folder, so it survives if that person deletes their account.
 - Public pages show only posters from TMDB, AniList and your own Supabase poster storage. Pasted poster links stay private to the person who pasted them. See the one-line find and replace below for the Supabase storage part.
+
+## Following, hearts and people cards
+
+1. In Supabase SQL Editor run `supabase/social.sql` (after `admin.sql` and `safety.sql`). It is safe to run twice.
+2. New pages: `/following` (Latest, Following, Followers tabs). Profiles at `/u/name` now show Follow, follower and following counts, a heart and a broken heart. Community uses the new people cards with search and sorting.
+3. Only public profiles can be followed or voted on. You cannot follow or vote on yourself. Limits: 500 follows per person, 60 follows and 60 votes per hour.
+4. Counts on server pages refresh within about 5 minutes. The buttons update instantly for the person pressing them.
+5. To hide broken hearts everywhere, set `SHOW_DISLIKES = false` in `lib/social.js`.
+
+## Privacy, terms, offline and announcements
+
+1. Run `supabase/announcements.sql` in the Supabase SQL Editor (after `admin.sql`).
+2. `/privacy` and `/terms` are plain pages. Edit the text in `app/privacy/page.js` and `app/terms/page.js`. Set `email` in `lib/config.js` if you want a public contact address on them. The footer links to both, to Contact (the feedback page), and carries the TMDB, AniList and JustWatch credits.
+3. Offline: `public/sw.js` caches the app shell, visited pages and posters, and only runs on the live site (not `npm run dev`). Edits made offline are kept on the device and sent to the account when the connection returns (`lib/offline.js`). If you change `sw.js`, bump `V` at the top so phones pick up the new one.
+4. Announcements: Admin, Notices tab. Pick a style and how long it shows. People can close a notice, which hides it on that device only.

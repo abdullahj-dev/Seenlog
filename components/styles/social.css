@@ -1,0 +1,29 @@
+/* Follow bar, people cards and the Following page. */
+.sbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:6px 0 14px}
+.sbar .sn{color:var(--dim);font-size:.9rem}.sbar .sn b{color:var(--cream)}
+.vb{display:inline-flex;align-items:center;gap:6px;background:var(--velvet);border:1.5px solid var(--seam);color:var(--dim);border-radius:99px;padding:6px 13px;font:700 .85rem 'Hanken Grotesk',sans-serif;cursor:pointer;transition:transform .15s,color .15s,border-color .15s}
+.vb:hover:not(:disabled){color:var(--cream);transform:translateY(-1px)}
+.vb:disabled{opacity:.6;cursor:default}
+.vb.on{color:#ff8a76;border-color:#ff8a76}
+.vb.br.on{color:var(--brass);border-color:var(--brass)}
+.ptools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0 16px}
+.ptools .fld{max-width:260px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.pcard{display:flex;flex-direction:column;background:var(--aisle);border:1px solid var(--seam);border-radius:12px;overflow:hidden;transition:transform .15s,border-color .15s}
+.pcard:hover{transform:translateY(-3px);border-color:var(--brass)}
+.pmain{display:flex;flex-direction:column;gap:6px;padding:14px;text-decoration:none;color:inherit;flex:1}
+.pid{display:flex;align-items:center;gap:10px}
+.pid b{font:1.2rem Limelight,serif;overflow-wrap:anywhere}
+.mono{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;flex:none;background:linear-gradient(145deg,var(--brass),#8a5a2a);color:#2a1408;font:800 1.05rem 'Hanken Grotesk',sans-serif;font-style:normal}
+.pstat{color:var(--dim);font-size:.88rem}
+.pmeta{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--dim);font-size:.82rem;align-items:center}
+.pmeta .hv{display:inline-flex;align-items:center;gap:4px;color:#ff8a76}.pmeta .hv.br{color:var(--brass)}
+.pstrip{display:flex;margin-top:6px}
+.pstrip img{width:52px;height:78px;object-fit:cover;border-radius:4px;border:2px solid var(--aisle);background:var(--seam);margin-left:-10px;box-shadow:0 4px 10px #0007}
+.pstrip img:first-child{margin-left:0}
+.pact{display:flex;gap:8px;padding:0 14px 14px}
+.fpage .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.fcard{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fcard>small{color:var(--dim);font-size:.78rem}.fcard>small a{color:var(--brass)}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
+@media(max-width:520px){.pgrid{grid-template-columns:1fr}.fgrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}

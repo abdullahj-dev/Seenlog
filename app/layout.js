@@ -1,4 +1,6 @@
 import './globals.css';
+import '@/components/styles/legal.css';
+import Link from 'next/link';
 import App from '@/components/App';
 import { SITE } from '@/lib/config';
 
@@ -37,7 +39,11 @@ export default function RootLayout({ children }) {
             </div></div>
           </header>
           <main id="main"><App />{children}</main>
-          <footer><span>© {new Date().getFullYear()} {SITE.name}{SITE.email ? ' · ' + SITE.email : ''}</span><span>Movie and series data from TMDB, anime data from AniList. This product uses the TMDB API but is not endorsed or certified by TMDB.</span></footer>
+          <footer>
+            <span>© {new Date().getFullYear()} {SITE.name}{SITE.email ? ' · ' + SITE.email : ''}</span>
+            <nav aria-label="About this site"><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/feedback">Contact</Link></nav>
+            <span className="credit">Movie and series data from <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a>, anime data from <a href="https://anilist.co" target="_blank" rel="noopener noreferrer">AniList</a>, streaming availability from JustWatch. This product uses the TMDB API but is not endorsed or certified by TMDB.</span>
+          </footer>
         </div>
       </body>
     </html>

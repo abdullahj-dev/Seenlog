@@ -14,6 +14,7 @@ import NavBar from '@/components/shell/NavBar';
 import Views from '@/components/shell/Views';
 import Popup from '@/components/shell/Popup';
 import Overlays from '@/components/shell/Overlays';
+import { markDirty, flushDirty, hasDirty } from '@/lib/offline';
 
 let M = SITE.ratingMode; // set from the viewer's own choice at the top of every render
 const K = 'seenlog_v1';
@@ -100,10 +101,14 @@ export default function App() {
     let dead = false;
     (async () => {
       if (!supabase || !user) { setLib(readLocal()); setPending(0); setReady(true); return; }
+      if (typeof navigator !== 'undefined' && !navigator.onLine) { setReady(true); return; }
       if (!L.current.length) setReady(false);
+      let left = 0;
+      try { left = await flushDirty(supabase, user.id, L.current); } catch { left = 1; }
       const { data, error } = await supabase.from('entries').select('data').eq('user_id', user.id);
       if (dead) return;
-      if (error) { say('Could not load your list from your account'); setLib([]); }
+      if (error) { if (L.current.length) say('Could not reach your account. Showing the copy saved on this device'); else { say('Could not load your list from your account'); setLib([]); } }
+      else if (left > 0 || hasDirty()) { say('Some changes are still waiting to sync'); }
       else {
         const cloud = data.map((r) => r.data);
         setLib(cloud); try { localStorage.setItem('seenlog_cache', JSON.stringify({ uid: user.id, list: cloud })); } catch {}
@@ -121,11 +126,24 @@ export default function App() {
     const old = new Map(prev.map((x) => [x.key, JSON.stringify(x)]));
     const up = next.filter((x) => old.get(x.key) !== JSON.stringify(x)).map((x) => ({ key: x.key, data: x, updated_at: new Date().toISOString() }));
     const gone = prev.filter((x) => !next.some((y) => y.key === x.key)).map((x) => x.key);
+    if (typeof navigator !== 'undefined' && !navigator.onLine) { markDirty(user.id, up.map((x) => x.key), gone); say('Saved on this device. It will sync when you are back online'); return; }
     (async () => {
-      if (up.length) { const { error } = await supabase.from('entries').upsert(up, { onConflict: 'user_id,key' }); if (error) say('Could not save to your account'); }
-      if (gone.length) { const { error } = await supabase.from('entries').delete().eq('user_id', user.id).in('key', gone); if (error) say('Could not remove from your account'); }
+      try {
+        if (up.length) { const { error } = await supabase.from('entries').upsert(up, { onConflict: 'user_id,key' }); if (error) { markDirty(user.id, up.map((x) => x.key), []); say('Could not save to your account. Will retry'); } }
+        if (gone.length) { const { error } = await supabase.from('entries').delete().eq('user_id', user.id).in('key', gone); if (error) { markDirty(user.id, [], gone); say('Could not remove from your account. Will retry'); } }
+      } catch { markDirty(user.id, up.map((x) => x.key), gone); say('Saved on this device. It will sync when you are back online'); }
     })();
   };
+  useEffect(() => {
+    if (!supabase || !user) return;
+    const back = async () => {
+      if (!hasDirty()) return;
+      let left = 1; try { left = await flushDirty(supabase, user.id, L.current); } catch {}
+      if (!left) say('Back online. Your changes are synced');
+    };
+    window.addEventListener('online', back);
+    return () => window.removeEventListener('online', back);
+  }, [user?.id]);
   function moveLocal() {
     const have = new Set(L.current.map((x) => x.key));
     const add = readLocal().filter((x) => !have.has(x.key));

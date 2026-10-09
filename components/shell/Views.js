@@ -12,12 +12,15 @@ import SettingsScreen from '@/components/screens/SettingsScreen';
 import ResetScreen from '@/components/screens/ResetScreen';
 import AdminScreen from '@/components/screens/AdminScreen';
 import FeedbackScreen from '@/components/screens/FeedbackScreen';
+import FollowingScreen from '@/components/screens/FollowingScreen';
+import Notice from '@/components/Notice';
 
 // Chooses which screen to draw for the current address.
 export default function Views() {
   const { path, onTitle } = useApp();
   return (
     <div key={path} className="pg">
+      <Notice />
       {path === '/' && <ListScreen />}
       {path === '/diary' && <DiaryScreen />}
       {path === '/discover' && <DiscoverRow />}
@@ -29,6 +32,7 @@ export default function Views() {
       {path === '/reset-password' && <ResetScreen />}
       {path === '/admin' && <AdminScreen />}
       {path === '/feedback' && <FeedbackScreen />}
+      {path === '/following' && <FollowingScreen />}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { SITE } from '@/lib/config';
 import { supabase } from '@/lib/supabase';
 
 export default async function sitemap() {
-  const out = [{ url: SITE.url, lastModified: new Date() }, { url: SITE.url + '/discover' }];
+  const out = [{ url: SITE.url, lastModified: new Date() }, { url: SITE.url + '/discover' }, { url: SITE.url + '/privacy' }, { url: SITE.url + '/terms' }, { url: SITE.url + '/community' }];
   try {
     if (supabase) {
       const { data } = await supabase.from('profiles').select('username').eq('is_public', true).not('username', 'is', null).limit(1000);

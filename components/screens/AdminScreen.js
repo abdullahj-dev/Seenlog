@@ -8,8 +8,9 @@ import { FB_KINDS, FB_STATUS } from '@/components/screens/FeedbackScreen';
 import { langName } from '@/lib/custom';
 import { SITE } from '@/lib/config';
 import AdminCatalog from '@/components/screens/AdminCatalog';
+import AdminNotices from '@/components/screens/AdminNotices';
 
-const TABS = [['over', 'Overview'], ['inbox', 'Inbox'], ['catalog', 'Catalog'], ['users', 'People']];
+const TABS = [['over', 'Overview'], ['inbox', 'Inbox'], ['catalog', 'Catalog'], ['notice', 'Notices'], ['users', 'People']];
 const day = (d) => (d ? new Date(d).toISOString().slice(0, 10) : 'never');
 
 export default function AdminScreen() {
@@ -94,6 +95,7 @@ export default function AdminScreen() {
         </div>
       )}
       {tab === 'catalog' && <AdminCatalog seed={seed} onSeedUsed={() => setSeed(null)} onSaved={(id) => saveFb({ id }, { status: 'done', admin_note: 'Added. It now shows up in search.' })} />}
+      {tab === 'notice' && <AdminNotices />}
       {tab === 'users' && (<>
         <input className="fld" placeholder="Search by email or username" value={f} onChange={(e) => setF(e.target.value)} aria-label="Search people" />
         {users === null && <p className="tag">Loading...</p>}

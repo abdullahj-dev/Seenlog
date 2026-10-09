@@ -6,6 +6,7 @@ import TasteMatch from '@/components/TasteMatch';
 import { notFound } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { SITE } from '@/lib/config';
+import SocialBar from '@/components/SocialBar';
 
 export const revalidate = 300;
 
@@ -14,14 +15,16 @@ const face = (v) => Math.max(0, Math.min(4, Math.floor((v - 0.1) / 20)));
 const fmt = (v) => v == null ? '-' : M === '100' ? Math.round(v) : M === '5' ? '★' + (v / 20).toFixed(1).replace('.0', '') : M === 'smiley' ? F[face(v)] : (v / 10).toFixed(1);
 const KD = { movie: 'Movie', series: 'Series', anime: 'Anime' };
 const ST = { plan: 'Plan to watch', now: 'Watching', done: 'Watched' };
-const okImg = (u) => /^https:\/\/(image\.tmdb\.org|s4\.anilist\.co)\//.test(u || '');
+const okImg = (u) => /^https:\/\/(image\.tmdb\.org|s4\.anilist\.co|[a-z0-9]+\.supabase\.co\/storage\/v1\/object\/public\/posters)\//.test(u || '');
 
 const load = cache(async (u) => {
   if (!supabase) return null;
   const { data: p } = await supabase.from('profiles').select('id,username').eq('username', String(u).toLowerCase()).eq('is_public', true).maybeSingle();
   if (!p) return null;
   const { data } = await supabase.from('public_entries').select('key,data').eq('user_id', p.id).limit(500);
-  return { name: p.username, items: (data || []).map((r) => ({ ...r.data, key: r.key })) };
+  const { data: soc } = await supabase.from('public_social').select('followers,following,hearts,broken').eq('username', p.username).maybeSingle();
+  const social = soc ? { followers: +soc.followers, following: +soc.following, hearts: +soc.hearts, broken: +soc.broken } : null;
+  return { name: p.username, social, items: (data || []).map((r) => ({ ...r.data, key: r.key })) };
 });
 
 export async function generateMetadata({ params, searchParams }) {
@@ -49,6 +52,7 @@ export default async function Profile({ params, searchParams }) {
   return (
     <section>
       <h2 className="rh d">{d.name}<small>{d.items.length} titles, {watched} watched{avg != null && <>, average <Rate v={avg} def={fmt(avg)} /></>}</small></h2>
+      {d.social && <SocialBar username={d.name} init={d.social} />}
       {pg === 1 && <TasteMatch by={d.name} theirs={Object.fromEntries(d.items.filter((x) => x.rating != null).map((x) => [x.key, [x.rating, x.title]]))} />}
       {pg === 1 && top.length > 0 && (<><h3 className="rh d" style={{ fontSize: '1.3rem', marginTop: 12 }}>Top rated</h3><div className="shelf">{top.map(card)}</div></>)}
       {pg === 1 && reviews.length > 0 && (<><h3 className="rh d" style={{ fontSize: '1.3rem' }}>Reviews</h3>{reviews.map((x) => <article className="rv" key={x.key}><span><b>{x.title}{x.rating != null && <>, <Rate v={x.rating} def={fmt(x.rating)} /></>}</b><p>{String(x.notes).slice(0, 600)}</p></span></article>)}</>)}

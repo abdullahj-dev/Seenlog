@@ -3,6 +3,7 @@ import { KD, ST, bg } from '@/lib/ui';
 import { useApp } from '@/components/AppContext';
 import CustomAdd from '@/components/shell/CustomAdd';
 import ReportDock from '@/components/shell/ReportDock';
+import Offline from '@/components/Offline';
 
 export default function Overlays() {
   const { Rating, bulk, bulkAdd, bulkDelete, helpOpen, justItem, list, patch, pickTonight, selMode, selected, setCur, setHelpOpen, setJust, setSelMode, setSelected, setToast, setToastAct, setTonight, toast, toastAct, tonight, topt, tweak } = useApp();
@@ -11,6 +12,7 @@ export default function Overlays() {
     <>
 <CustomAdd />
 <ReportDock />
+<Offline />
 {tonight && (
         <div className="help" onClick={() => setTonight(null)}>
           <div className="helpbox tn" onClick={(e) => e.stopPropagation()}>

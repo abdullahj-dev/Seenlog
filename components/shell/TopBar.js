@@ -60,6 +60,7 @@ export default function TopBar() {
                   <option value="10">Decimal, out of 10 (7.5)</option><option value="100">Out of 100 (75)</option><option value="5">Stars (4 stars)</option><option value="smiley">Faces</option>
                 </select></div>
               <button className="btn g" onClick={() => { setCustomOpen({ seed: '' }); setAuthOpen(false); }}>Add a title by hand</button>
+              {user && <Link className="btn g" href="/following" onClick={() => setAuthOpen(false)}>Following</Link>}
               <Link className="btn g" href="/feedback" onClick={() => setAuthOpen(false)}>Send feedback <ReplyCount /></Link>
               <button className="btn g" onClick={() => { setHelpOpen(true); setAuthOpen(false); }}>Keyboard shortcuts</button>
               {user && <button className="btn g" onClick={() => { supabase.auth.signOut(); try { localStorage.removeItem('seenlog_cache'); } catch {} setAuthOpen(false); }}>Sign out</button>}
