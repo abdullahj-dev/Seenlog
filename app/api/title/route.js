@@ -1,7 +1,9 @@
+import { guard } from '@/lib/guard';
 import { NextResponse } from 'next/server';
 import { tmdbDetails, anilistById } from '@/lib/sources';
 
 export async function GET(req) {
+  const g = guard(req); if (g) return g;
   const p = new URL(req.url).searchParams;
   const al = p.get('al'), tm = p.get('tm'), id = p.get('id');
   try {

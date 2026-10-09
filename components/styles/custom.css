@@ -1,0 +1,18 @@
+/* Manual add form. Imported by components/shell/CustomAdd.js. */
+.cdlg{max-width:620px}
+.cf{padding:20px;display:flex;flex-direction:column;gap:14px}
+.cf label{display:flex;flex-direction:column;gap:5px;font:600 .78rem 'Hanken Grotesk',sans-serif;color:var(--dim)}
+.cf .fld{font-weight:400;font-size:.95rem}
+.cf textarea.fld{resize:vertical}
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cgrid .wide{grid-column:1/-1}
+.cposter{display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:start}
+.cposter .poster{width:110px;aspect-ratio:2/3;background-size:cover;background-position:center;border:1px solid var(--seam);border-radius:4px;font-size:.85rem}
+.cposter>div:last-child{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.cposter label.up{display:inline-block;cursor:pointer;text-align:center}
+.cposter .fld{width:100%}
+.addmiss{display:block;width:100%;text-align:left;background:0;border:0;border-top:1px solid var(--seam);color:var(--brass);padding:12px 14px;font:700 .88rem 'Hanken Grotesk',sans-serif;cursor:pointer}
+.addmiss:hover{background:var(--velvet)}
+.loosenote{padding:8px 14px;color:var(--dim);font-size:.8rem}
+@media(max-width:520px){.cgrid{grid-template-columns:1fr 1fr}.cgrid .wide{grid-column:1/-1}.cposter{grid-template-columns:90px 1fr}.cposter .poster{width:90px}}
+.cgrid>label,.cposter>div{min-width:0}.cf .fld{min-width:0;box-sizing:border-box}.cf{box-sizing:border-box}

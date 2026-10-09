@@ -8,6 +8,7 @@ export const metadata = {
   description: SITE.description,
   openGraph: { title: SITE.name, description: SITE.description, type: 'website' },
   twitter: { card: 'summary_large_image' },
+  appleWebApp: { capable: true, title: SITE.name, statusBarStyle: 'black-translucent' },
   alternates: { canonical: '/' },
 };
 export const viewport = { themeColor: '#1d0c11' };
@@ -17,8 +18,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://image.tmdb.org" />
+        <script dangerouslySetInnerHTML={{ __html: "try{var a=localStorage.getItem('seenlog_accent');if(a)document.documentElement.style.setProperty('--brass',a)}catch(e){}" }} />
         <link rel="preconnect" href="https://s4.anilist.co" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Limelight&family=Hanken+Grotesk:wght@400;600;800&display=swap" />

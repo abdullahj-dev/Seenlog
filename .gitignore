@@ -3,3 +3,15 @@ node_modules
 .env.local
 
 .vercel
+
+
+# Build Outputs
+.next/
+out/
+build/
+dist/
+
+# System / Editor Files
+.DS_Store
+Thumbs.db
+.vscode/

@@ -2,6 +2,7 @@ import { cache } from 'react';
 import Link from 'next/link';
 import PublicCard from '@/components/PublicCard';
 import Rate from '@/components/Rate';
+import TasteMatch from '@/components/TasteMatch';
 import { notFound } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { SITE } from '@/lib/config';
@@ -48,6 +49,7 @@ export default async function Profile({ params, searchParams }) {
   return (
     <section>
       <h2 className="rh d">{d.name}<small>{d.items.length} titles, {watched} watched{avg != null && <>, average <Rate v={avg} def={fmt(avg)} /></>}</small></h2>
+      {pg === 1 && <TasteMatch by={d.name} theirs={Object.fromEntries(d.items.filter((x) => x.rating != null).map((x) => [x.key, [x.rating, x.title]]))} />}
       {pg === 1 && top.length > 0 && (<><h3 className="rh d" style={{ fontSize: '1.3rem', marginTop: 12 }}>Top rated</h3><div className="shelf">{top.map(card)}</div></>)}
       {pg === 1 && reviews.length > 0 && (<><h3 className="rh d" style={{ fontSize: '1.3rem' }}>Reviews</h3>{reviews.map((x) => <article className="rv" key={x.key}><span><b>{x.title}{x.rating != null && <>, <Rate v={x.rating} def={fmt(x.rating)} /></>}</b><p>{String(x.notes).slice(0, 600)}</p></span></article>)}</>)}
       <h3 className="rh d" style={{ fontSize: '1.3rem' }}>Everything</h3>

@@ -1,0 +1,16 @@
+/* Sign in, reset password and settings pages, plus the short top-bar menu. Imported by components/shell/Views.js. */
+.settings{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:16px;align-items:start}
+.scard{background:var(--aisle);border:1px solid var(--seam);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.scard h3{font:1.25rem Limelight,serif;color:var(--brass);margin:0}
+.scard .btn{text-align:center;text-decoration:none}
+.scard .seg{width:100%}
+.fld{background:var(--velvet);border:1px solid var(--seam);color:var(--cream);border-radius:8px;padding:11px 12px;font:inherit;width:100%;min-width:0}
+.fld:focus{border-color:var(--brass);outline:0}
+.srow{display:flex;gap:8px;align-items:center}
+.hr{border:0;border-top:1px solid var(--seam);width:100%;margin:2px 0}
+.authpage{max-width:460px;margin:26px auto}
+.msg{margin:0;color:var(--brass);font-size:.9rem}
+.msg.err{color:var(--ember)}
+.linkbtn{background:0;border:0;color:var(--brass);cursor:pointer;font:inherit;font-size:.88rem;text-align:left;padding:0;text-decoration:underline}
+.top .pop{max-height:calc(100vh - 96px);overflow-y:auto}
+[data-motion=off] *,[data-motion=off] *::before,[data-motion=off] *::after{animation:none!important;transition:none!important}

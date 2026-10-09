@@ -16,6 +16,7 @@ export default function PublicCard({ x, by, r, ok }) {
   }, []);
   const shown = r == null ? null : mode && x.rating != null ? fmtRating(x.rating, mode) : r;
   useEffect(() => { const d = ref.current; if (open && d && !d.open) d.showModal(); }, [open]);
+  const bgSm = ok ? { backgroundImage: `url('${x.poster.replace('/w342/', '/w185/')}')` } : undefined;
   const bg = ok ? { backgroundImage: `url('${x.poster}')` } : undefined;
 
   function addIt() {
@@ -29,7 +30,7 @@ export default function PublicCard({ x, by, r, ok }) {
   return (
     <article className="card">
       <button className="pb" onClick={() => setOpen(true)}>
-        <div className={'poster' + (ok ? '' : ' blank')} style={bg}>
+        <div className={'poster' + (ok ? '' : ' blank')} style={bgSm}>
           {ok ? '' : x.title}
           {x.status && <span className={'st ' + x.status}>{ST[x.status]}</span>}
           {shown != null && <span className="stamp">{shown}</span>}
@@ -46,7 +47,7 @@ export default function PublicCard({ x, by, r, ok }) {
               <div className="badges">{shown != null && <span className="mine">{by}'s rating {shown}</span>}{x.status && <span>{ST[x.status]}</span>}</div>
               {x.notes && <p>{x.notes}</p>}
               <div className="act">
-                <button className="btn" onClick={addIt}>Add to my list</button>
+                {/^(tm|al)/.test(x.key) && <button className="btn" onClick={addIt}>Add to my list</button>}
                 <button className="btn g" onClick={() => ref.current.close()}>Close</button>
               </div>
             </div>
