@@ -3,11 +3,14 @@ import '@/components/styles/social.css';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Heart, SHOW_DISLIKES } from '@/lib/social';
-import { useApp } from '@/components/AppContext';
+import { useRouter } from 'next/navigation';
+import { useUser } from '@/lib/useUser';
 
 // Follow button, follower counts, heart and broken heart for a public profile.
 export default function SocialBar({ username, init }) {
-  const { say, user, router } = useApp() || {};
+  const user = useUser(), router = useRouter();
+  const [msg, setMsg] = useState('');
+  const say = (m) => setMsg(m);
   const [c, setC] = useState(init);
   const [me, setMe] = useState({ id: null, own: false, follows: false, vote: 0 });
   const [busy, setBusy] = useState(false);
@@ -28,20 +31,23 @@ export default function SocialBar({ username, init }) {
     return () => { dead = true; };
   }, [user?.id, username]);
 
-  const needSignIn = () => { say?.('Sign in to follow people and leave hearts'); router?.push('/login'); };
+  const needSignIn = () => { say('Sign in to follow people and leave hearts'); router.push('/login'); };
 
   async function follow() {
+    if (user === undefined) return;
     if (!user) return needSignIn();
     if (!me.id || busy) return;
     setBusy(true);
     const on = !me.follows;
     const { error } = on ? await supabase.from('follows').insert({ follower: user.id, followee: me.id }) : await supabase.from('follows').delete().eq('follower', user.id).eq('followee', me.id);
     setBusy(false);
-    if (error) return say?.(error.message);
+    if (error) return say(error.message);
+    setMsg('');
     setMe((m) => ({ ...m, follows: on })); setC((x) => ({ ...x, followers: Math.max(0, x.followers + (on ? 1 : -1)) }));
   }
 
   async function vote(v) {
+    if (user === undefined) return;
     if (!user) return needSignIn();
     if (!me.id || busy) return;
     setBusy(true);
@@ -49,7 +55,8 @@ export default function SocialBar({ username, init }) {
     const { error } = same ? await supabase.from('profile_votes').delete().eq('voter', user.id).eq('target', me.id)
       : await supabase.from('profile_votes').upsert({ voter: user.id, target: me.id, vote: v }, { onConflict: 'voter,target' });
     setBusy(false);
-    if (error) return say?.(error.message);
+    if (error) return say(error.message);
+    setMsg('');
     setC((x) => {
       let { hearts, broken } = x;
       if (me.vote === 1) hearts--; if (me.vote === -1) broken--;
@@ -66,6 +73,7 @@ export default function SocialBar({ username, init }) {
       <span className="sn"><b>{c.following}</b> following</span>
       <button className={'vb' + (me.vote === 1 ? ' on' : '')} aria-pressed={me.vote === 1} aria-label={'Heart this profile, ' + c.hearts + ' so far'} disabled={me.own} onClick={() => vote(1)}><Heart /> {c.hearts}</button>
       {SHOW_DISLIKES && <button className={'vb br' + (me.vote === -1 ? ' on' : '')} aria-pressed={me.vote === -1} aria-label={'Broken heart for this profile, ' + c.broken + ' so far'} disabled={me.own} onClick={() => vote(-1)}><Heart broken /> {c.broken}</button>}
+      {msg && <span className="smsg" role="status">{msg}</span>}
     </div>
   );
 }

@@ -3,13 +3,13 @@ import '@/components/styles/social.css';
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import PersonCard from '@/components/PersonCard';
-import { useApp } from '@/components/AppContext';
+import { useUser } from '@/lib/useUser';
 
 const SORTS = { titles: 'Most titles', followers: 'Most followed', hearts: 'Most loved' };
 
 // Community people list with a search box and sorting. Data comes from the server page.
 export default function PeopleGrid({ people }) {
-  const { user } = useApp() || {};
+  const user = useUser();
   const [q, setQ] = useState('');
   const [sort, setSort] = useState('titles');
   const shown = useMemo(() => people.filter((p) => !q.trim() || p.username.includes(q.trim().toLowerCase()))

@@ -2,12 +2,11 @@
 import Link from 'next/link';
 import { fmtRating } from '@/lib/rating';
 import { Heart, SHOW_DISLIKES } from '@/lib/social';
-import { useApp } from '@/components/AppContext';
+import { SITE } from '@/lib/config';
 
 // One person on the Community and Following pages. Children are optional action buttons.
 export default function PersonCard({ p, children }) {
-  const { rmode } = useApp() || {};
-  const avg = p.avg_rating != null ? fmtRating(p.avg_rating * 10, rmode || '10') : null;
+  const avg = p.avg_rating != null ? fmtRating(p.avg_rating * 10, SITE.ratingMode || '10') : null;
   return (
     <article className="pcard">
       <Link className="pmain" href={'/u/' + p.username}>

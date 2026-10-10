@@ -27,3 +27,4 @@
 .fcard>small{color:var(--dim);font-size:.78rem}.fcard>small a{color:var(--brass)}
 .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
 @media(max-width:520px){.pgrid{grid-template-columns:1fr}.fgrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
+.smsg{flex-basis:100%;color:var(--brass);font-size:.88rem}
